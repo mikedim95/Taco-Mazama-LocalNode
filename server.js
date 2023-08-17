@@ -8,9 +8,9 @@ dotenv.config({ path: './config.env' });
 const mqttServer = createMqttServer();
 
 // Start the MQTT server on a different port
-const mqttPort = 8883;
-mqttServer.listen(mqttPort, () => {
-  console.log(`MQTT server is listening on port ${mqttPort}...`);
+const localPort = 3000;
+mqttServer.listen(localPort, () => {
+  console.log(`MQTT server is listening on port ${localPort}...`);
 });
 /* // MQTT subscription
 mqttServer.on('message', async (_topic, message) => {
