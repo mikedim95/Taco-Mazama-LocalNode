@@ -2,6 +2,7 @@
 const express = require('express');
 const mqtt = require('mqtt');
 const printMessage = require('./thermalPrinter'); 
+let buildOrderForPrinter = require('./buildOrderForPrinter');
 
 const createMqttServer = () => {
 const app = express();
@@ -33,12 +34,14 @@ client.on('connect', () => {
 // MQTT subscription
 client.on('message', async (_topic, message) => {
   const receivedMessage = message.toString();
-  console.log('Received message:', receivedMessage);
+  let buildOrder = await buildOrderForPrinter(receivedMessage);
+  
+/*   console.log('Received message:', buildOrder); */
   // Print the received message
-  await printMessage(receivedMessage);
+  await printMessage(buildOrder);
 });
 /* client.on('message', (_topic, message) => {
-  console.log('Received message:', message.toString());
+  console.log('Reψλεαρceived message:', message.toString());
 }); */
 
 return app;
