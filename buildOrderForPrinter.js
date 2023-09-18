@@ -46,6 +46,10 @@ const buildOrderForPrinter = (orderMessage) => {
     }
   }
 
+  /*   // Total Price (bold)
+  if (order.price) {
+    formattedOrder += `\x1b[1mTotal Price: €${order.price}\x1b[0m\n`; // Apply bold formatting */
+
   // Total Price
   if (order.price) {
     formattedOrder += `Total Price: €${order.price}\n`;
