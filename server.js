@@ -1,7 +1,7 @@
-const dotenv = require('dotenv');
-const createMqttServer = require('./mqtt');
+const dotenv = require("dotenv");
+const createMqttServer = require("./mqtt");
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: "./config.env" });
 
 // Create the MQTT server instance
 const mqttServer = createMqttServer();
