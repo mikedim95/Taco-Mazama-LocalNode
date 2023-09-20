@@ -34,6 +34,7 @@ const createMqttServer = () => {
   // MQTT subscription
   client.on("message", async (_topic, message) => {
     const receivedMessage = message.toString();
+    /* console.log("Received message:", receivedMessage); */
     var buildOrder = await buildOrderForPrinter(receivedMessage);
 
     /*   console.log('Received message:', buildOrder); */

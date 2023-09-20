@@ -1,11 +1,12 @@
 const buildOrderForPrinter = (orderMessage) => {
-  const order = JSON.parse(orderMessage);
+  const order2 = JSON.parse(orderMessage);
+  const order = order2.order;
   let formattedOrder = "";
 
   formattedOrder += "TACO MAZAMA\n";
   formattedOrder += "-------------\n\n";
 
-  formattedOrder += `TRAPEZI No: ${tableNo}\n\n`;
+  formattedOrder += `TRAPEZI No: ${order.tableNo}\n\n`;
 
   // Dishes
   if (order.dish && order.dish.length > 0) {
@@ -30,7 +31,7 @@ const buildOrderForPrinter = (orderMessage) => {
     for (const side of order.sides) {
       formattedOrder += `${side.title.toUpperCase()}\n`;
       formattedOrder += `Quantity: X${side.multiplier}\n`;
-      if (sides.comments)
+      if (order.sides.comments)
         formattedOrder += `Comments: ${sides.comments.join(", ")}\n\n`;
     }
   }
@@ -41,7 +42,7 @@ const buildOrderForPrinter = (orderMessage) => {
     for (const beverage of order.beverages) {
       formattedOrder += `${beverage.title.toUpperCase()}\n`;
       formattedOrder += `Quantity: X${beverage.multiplier}\n`;
-      if (beverages.comments)
+      if (order.beverages.comments)
         formattedOrder += `Comments: ${beverages.comments.join(", ")}\n\n`;
     }
   }
