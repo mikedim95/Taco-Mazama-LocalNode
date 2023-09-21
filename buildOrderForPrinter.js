@@ -18,7 +18,7 @@ const buildOrderForPrinter = (orderMessage) => {
       if (dish.ingredients)
         formattedOrder += `Ingredients: ${dish.ingredients.join(", ")}\n`;
       if (dish.salsa) formattedOrder += `Salsa: ${dish.salsa.join(", ")}\n`;
-      if (dish.extras) formattedOrder += `Extras: ${dish.extras.join(", ")}\n`;
+      if (dish.extra) formattedOrder += `Extras: ${dish.extra.join(", ")}\n`;
       formattedOrder += `Quantity: X${dish.multiplier}\n`;
       if (dish.comments)
         formattedOrder += `Comments: ${dish.comments.join(", ")}\n\n`;
