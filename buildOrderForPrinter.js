@@ -53,7 +53,7 @@ const buildOrderForPrinter = (orderMessage) => {
 
   // Total Price
   if (order.price) {
-    formattedOrder += `Total Price: €${order.price}\n`;
+    formattedOrder += `Total Price: \u20AC${order.price}\n`;
   }
 
   return formattedOrder;
