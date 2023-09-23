@@ -1,8 +1,9 @@
 const greekUtils = require("greek-utils");
 
 const buildOrderForPrinter = (orderMessage) => {
-  const order = JSON.parse(orderMessage);
-
+  const order2 = JSON.parse(orderMessage);
+  const order = order2.order;
+  console.log(order);
   let formattedOrder = "";
 
   formattedOrder += "TACO MAZAMA\n";

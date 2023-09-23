@@ -13,6 +13,6 @@ const mqttClient = createMqttClient();
 
 // Start the Express server on a different port
 const localPort = 3000;
-app.listen(localPort, () => {
-  console.log(`Express server is listening on port ${localPort}...`);
+app.listen(5000, () => {
+  console.log(`Express server is listening on port 5000...`);
 });

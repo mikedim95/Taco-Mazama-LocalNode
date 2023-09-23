@@ -1,11 +1,12 @@
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-const axios = require("axios");
+
 const getLocalNodePublicIP = async () => {
   try {
-    const response = await axios.get(process.env.GET_MY_PUBLIC_IP);
-    const publicIP = response.data.ip; // Extract the public IP from the response
+    const response = await fetch(process.env.GET_MY_PUBLIC_IP);
+    const data = await response.json();
+    const publicIP = data.ip; // Extract the public IP from the response
     console.log("Public IP:", publicIP);
     return publicIP;
   } catch (error) {
@@ -13,21 +14,31 @@ const getLocalNodePublicIP = async () => {
     return error;
   }
 };
+
 const postLocalNodePublicIP = async (publicIP) => {
-  await sleep(20000);
   try {
-    const response = await axios.post(process.env.PUBLIC_IP_SERVER_UPDATE, {
-      publicIP: publicIP,
+    // Simulate a delay of 5 seconds
+    await sleep(5000);
+
+    const response = await fetch(process.env.PUBLIC_IP_SERVER_UPDATE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ publicIP }),
     });
 
-    /*  const response = await axios.post(
-      "https://taco-mazama-api.onrender.com/utilRoutes"
-    ); */
-    console.log("POST request sent successfully");
-    return response.data;
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    console.log("POST request sent successfully", responseData);
+    return responseData.publicIP;
   } catch (error) {
     console.error("Error sending POST request:", error);
-    return error;
+    throw error; // Re-throw the error for higher-level handling if needed
   }
 };
+
 module.exports = { getLocalNodePublicIP, postLocalNodePublicIP };

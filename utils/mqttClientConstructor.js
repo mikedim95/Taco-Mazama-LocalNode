@@ -7,7 +7,7 @@ const {
 } = require("./publicIPResolver");
 
 const createMqttClient = () => {
-  const clientId = "localNode_Printer";
+  const clientId = process.env.MQTT_CLIENT;
   const username = process.env.MQTT_USERNAME;
   const password = process.env.MQTT_PASSWORD;
   const clientConnectString = process.env.MQTT_CLIENT_CONNECT_STRING;
@@ -21,7 +21,7 @@ const createMqttClient = () => {
 
   // MQTT topic
   const topic = process.env.MQTT_TOPIC;
-  const updatePublicIP = process.env.MQTT_updatePublicIP;
+  const updatePublicIP = process.env.MQTT_UPDATE_PUBLIC_IP;
 
   // MQTT subscription
   client.on("connect", async () => {
@@ -40,8 +40,12 @@ const createMqttClient = () => {
         console.log("Subscribed to topic:", updatePublicIP);
       }
     });
+
     const ip = await getLocalNodePublicIP();
-    await postLocalNodePublicIP(ip);
+    const temp = await postLocalNodePublicIP(ip);
+    console.log(
+      `LocalNode PublicIP to report: ${ip} \n API Server PublicIP reports: ${temp}`
+    );
   });
 
   // MQTT await message
@@ -51,13 +55,23 @@ const createMqttClient = () => {
       case "testTopic": {
         console.log(`Received message ${receivedMessage} on topic: testTopic`);
 
-        const buildOrder = await buildOrderForPrinter(receivedMessage);
+        try {
+          const buildOrder = await buildOrderForPrinter(receivedMessage);
+          console.log("Received message:", buildOrder);
 
-        console.log("Received message:", buildOrder);
-        // Print the received message
-        await printMessage(buildOrder);
+          // Print the received message
+          try {
+            await printMessage(buildOrder);
+          } catch (printError) {
+            console.error("Error printing message:", printError);
+          }
+        } catch (buildError) {
+          console.error("Error building order for printer:", buildError);
+        }
+
         break;
       }
+
       case "updatePublicIP": {
         const ip = await getLocalNodePublicIP();
         const temp = await postLocalNodePublicIP(ip);
@@ -67,7 +81,15 @@ const createMqttClient = () => {
       }
     }
   });
-
+  client.on("error", (err) => {
+    console.error("MQTT client error:", err);
+  });
+  client.on("reconnect", () => {
+    console.log("Reconnecting to MQTT broker...");
+  });
+  client.on("close", () => {
+    console.log("MQTT connection closed.");
+  });
   /* const mqttClientInstance = {
     client,
     publishMessage: (topic, message) => {
