@@ -1,18 +1,8 @@
-const axios = require("axios");
 const mqtt = require("mqtt");
 const printMessage = require("./thermalPrinter");
 const buildOrderForPrinter = require("./buildOrderForPrinter");
+const localIPServerUpdate = require("./localIPServerUpdate");
 
-const sendPostRequest = async () => {
-  try {
-    const response = await axios.post("http://localhost:4000/utilRoutes");
-    console.log("POST request sent successfully");
-    return response.data;
-  } catch (error) {
-    console.error("Error sending POST request:", error);
-    return error;
-  }
-};
 const createMqttClient = () => {
   const clientId = "localNode_Printer";
   const username = process.env.MQTT_USERNAME;
@@ -47,12 +37,7 @@ const createMqttClient = () => {
         console.log("Subscribed to topic:", updatePublicIP);
       }
     });
-    try {
-      const responseData = await sendPostRequest();
-      console.log("Cloud Api reports my Public IP: ", responseData);
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
+    await localIPServerUpdate(client);
   });
 
   // MQTT await message
@@ -73,15 +58,6 @@ const createMqttClient = () => {
         console.log(
           `Received message ${receivedMessage} on topic: updatePublicIP`
         );
-        setTimeout(() => {}, 3000);
-        try {
-          const responseData = await sendPostRequest();
-          console.log("Received response data:", responseData);
-        } catch (error) {
-          console.error("An error occurred:", error);
-        }
-
-        break;
       }
     }
   });
