@@ -14,7 +14,7 @@ const getLocalNodePublicIP = async () => {
   }
 };
 const postLocalNodePublicIP = async (publicIP) => {
-  await sleep(5000);
+  await sleep(20000);
   try {
     const response = await axios.post(process.env.PUBLIC_IP_SERVER_UPDATE, {
       publicIP: publicIP,
