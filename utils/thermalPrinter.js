@@ -19,9 +19,10 @@ const printMessage = async (message) => {
     });
   });
 
+  printer.size(1, 1);
   // Send commands to the printer
   printer
-    .font("a")
+    .font("b")
     .align("ct")
     .text(message)
     .cut()

@@ -1,7 +1,10 @@
 const mqtt = require("mqtt");
 const printMessage = require("./thermalPrinter");
 const buildOrderForPrinter = require("./buildOrderForPrinter");
-const localIPServerUpdate = require("./localIPServerUpdate");
+const {
+  getLocalNodePublicIP,
+  postLocalNodePublicIP,
+} = require("./publicIPResolver");
 
 const createMqttClient = () => {
   const clientId = "localNode_Printer";
@@ -37,7 +40,8 @@ const createMqttClient = () => {
         console.log("Subscribed to topic:", updatePublicIP);
       }
     });
-    await localIPServerUpdate(client);
+    const ip = await getLocalNodePublicIP();
+    await postLocalNodePublicIP(ip);
   });
 
   // MQTT await message
@@ -55,8 +59,10 @@ const createMqttClient = () => {
         break;
       }
       case "updatePublicIP": {
+        const ip = await getLocalNodePublicIP();
+        const temp = await postLocalNodePublicIP(ip);
         console.log(
-          `Received message ${receivedMessage} on topic: updatePublicIP`
+          `LocalNode PublicIP to report: ${ip} \n API Server PublicIP reports: ${temp}`
         );
       }
     }
