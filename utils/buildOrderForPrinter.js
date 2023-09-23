@@ -16,6 +16,7 @@ const buildOrderForPrinter = (orderMessage) => {
     formattedOrder += "PIATA:\n-------\n";
     for (const dish of order.dish) {
       formattedOrder += `${dish.multiplier}x\n`;
+      formattedOrder += `${dish.size}`;
       formattedOrder += `${greekUtils.toGreeklish(dish.title).toUpperCase()}\n`;
       if (dish.stuffing)
         formattedOrder += `${greekUtils.toGreeklish(
