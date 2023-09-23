@@ -1,13 +1,18 @@
+const createMqttClient = require("./utils/mqttClientConstructor.js");
+const express = require("express");
 const dotenv = require("dotenv");
-const createMqttServer = require("./mqtt");
 
 dotenv.config({ path: "./config.env" });
+const app = express();
 
-// Create the MQTT server instance
-const mqttServer = createMqttServer();
+// Create the MQTT client instance
+const mqttClient = createMqttClient();
 
-// Start the MQTT server on a different port
+// Publish a message using the publishMessage method
+/* mqttClient.function2("testTopic", "testMessage"); */
+
+// Start the Express server on a different port
 const localPort = 3000;
-mqttServer.listen(localPort, () => {
-  console.log(`MQTT server is listening on port ${localPort}...`);
+app.listen(localPort, () => {
+  console.log(`Express server is listening on port ${localPort}...`);
 });
