@@ -1,7 +1,7 @@
 const escpos = require("escpos");
 escpos.Network = require("escpos-network");
 
-const printerIpAddress = "192.168.1.100"; // Printer IP
+const printerIpAddress = "192.168.2.100"; // Printer IP
 const printerPort = 9100; //Printer Port
 
 const printMessage = async (message) => {
