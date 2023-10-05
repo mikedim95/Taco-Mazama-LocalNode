@@ -53,17 +53,33 @@ const buildOrderForPrinter = (orderMessage) => {
   }
 
   // Beverages
-  if (order.beverages && order.beverages.length > 0) {
-    formattedOrder += "\nPOTA:\n----------\n";
-    for (const beverage of order.beverages) {
-      formattedOrder += `${beverage.multiplier}x\n`;
-      formattedOrder += `${greekUtils
-        .toGreeklish(beverage.title)
-        .toUpperCase()}\n`;
-      if (beverage.comments)
-        formattedOrder += `Comments: ${greekUtils.toGreeklish(
-          beverage.comments.join(", ")
-        )}\n\n`;
+  formattedOrder += "\nPOTA:\n----------\n";
+  if (order.beverages) {
+    if (order.beverages.beers && order.beverages.beers.length > 0) {
+      for (const beer of order.beverages.beers) {
+        formattedOrder += `${beer.multiplier}x\n`;
+        formattedOrder += `${greekUtils
+          .toGreeklish(beer.title)
+          .toUpperCase()}\n`;
+      }
+    }
+
+    if (order.beverages.drinks && order.beverages.drinks.length > 0) {
+      for (const drink of order.beverages.drinks) {
+        formattedOrder += `${drink.multiplier}x\n`;
+        formattedOrder += `${greekUtils
+          .toGreeklish(drink.title)
+          .toUpperCase()}\n`;
+      }
+    }
+
+    if (order.beverages.softDrinks && order.beverages.softDrinks.length > 0) {
+      for (const softDrink of order.beverages.softDrinks) {
+        formattedOrder += `${softDrink.multiplier}x\n`;
+        formattedOrder += `${greekUtils
+          .toGreeklish(softDrink.title)
+          .toUpperCase()}\n\n`;
+      }
     }
   }
 
@@ -71,7 +87,7 @@ const buildOrderForPrinter = (orderMessage) => {
   if (order.price) {
     formattedOrder += `\n\nTotal Price: ${order.price} EURO\n`;
   }
-
+  /* console.log(formattedOrder); */
   return formattedOrder;
 };
 
